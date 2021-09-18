@@ -2,26 +2,26 @@ const { writeFileSync, readFileSync } = require("fs")
 const { join } = require("path/posix")
 
 var points = [
+    {
+        x: 1631282400,
+        y: 1680000000
+    },
+    {
+        x: 1631516400,
+        y: 1520000000
+    },
+    {
+        x: 1631656800,
+        y: 1430000000
+    },
+    {
+        x: 1631872800,
+        y: 1350000000
+    }
     // {
-    //     x: 1,
-    //     y: 5
+    //     x: 14,
+    //     y: 6
     // },
-    // {
-    //     x: 2,
-    //     y: 8
-    // },
-    {
-        x: 4,
-        y: 11
-    },
-    {
-        x: 7,
-        y: 8
-    },
-    {
-        x: 14,
-        y: 6
-    },
 ]
 var grade = points.length-1 //potrebbe aver senso che il grado sia sempre il numero di punti disponibili -1
 
@@ -56,7 +56,7 @@ function getEquation(points, grade) {
             var noBracketsText = splitEq[j].replace("(", "").replace(")", "")
             if (noBracketsText.includes("^") && noBracketsText.split("^").length === 2) {
                 var splitNum = noBracketsText.split("^")
-                var powedNum = splitNum[0].replace(/[0-9]/g, '')+ Math.pow(Number(splitNum[0].replace(/\D/g, "")), Number(splitNum[1]))
+                var powedNum = splitNum[0].replace(/[0-9]/g, '')+ Math.pow((splitNum[0].replace(/\D/g, "")), Number(splitNum[1]))
                 newEquation = newEquation.replace(splitEq[j], powedNum)
             } else {
                 newEquation = newEquation.replace(splitEq[j], noBracketsText)
@@ -73,8 +73,8 @@ function getEquation(points, grade) {
     equations.pop()
     for(var i=0;i<equations.length;i++){
         var equalSplit=equations[i].split("=")
-        matriceTerminiNoti.push(Number(equalSplit[0]))
-        var rigaCoeffic = equalSplit[1].replace(/\+/gi,"").split(/\D/)
+        matriceTerminiNoti.push((equalSplit[0]).replace(/\./g, ""))
+        var rigaCoeffic = equalSplit[1].replace(/\+/gi,"").replace(/\./gi, "").split(/\D/)
         rigaCoeffic.shift()
         matriceCoefficienti.push(rigaCoeffic)
     }   
@@ -102,7 +102,7 @@ function getEquation(points, grade) {
     for(var i=0;i<vettoreCoeffSol.length;i++){
         var splitted=vettoreCoeffSol[i].split("=")
         var letter =splitted[0]
-        var number= splitted[1]
+        var number= Number(splitted[1])
         finalEq=finalEq.replace(new RegExp(letter, 'gi'),number)
     }
     console.log(finalEq)
